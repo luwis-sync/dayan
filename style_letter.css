@@ -1,14 +1,26 @@
-:root{
+:root {
+  --envelope-width: 400px;
   --primary: #fff;
-  --bg-color: rgb(5, 53, 61);
+  --bg-color: rgb(0, 0, 0);
   --bg-envelope-color: #f5edd1;
   --envelope-tab: #ecdeb8;
   --envelope-cover: #e6cfa7;
   --shadow-color: rgba(0, 0, 0, 0.2);
   --txt-color: #444;
-  --heart-color: rgb(252, 8, 231);
+  --heart-color: rgb(255, 0, 0);
 }
-body{
+
+/* body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: url("wp/wp2.png") no-repeat center center / cover fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -17,48 +29,68 @@ body{
   align-items: center;
   justify-content: center;
 }
+
 .container {
   height: 100vh;
   display: grid;
   place-items: center;
 }
-.container > .envelope-wrapper {
+
+.envelope-wrapper {
   background: var(--bg-envelope-color);
   box-shadow: 0 0 40px var(--shadow-color);
 }
-.envelope-wrapper > .envelope {
+
+/* Envelope box */
+.envelope {
   position: relative;
-  width: 300px;
+  width: var(--envelope-width);
   height: 230px;
 }
-.envelope-wrapper > .envelope::before {
+
+/* Top flap (folded up) */
+.envelope::before {
   content: "";
   position: absolute;
   top: 0;
+  left: 0;
   z-index: 2;
+
+  /* half of the envelope width on each side */
+  border-right: calc(var(--envelope-width) / 2) solid transparent;
+  border-left:  calc(var(--envelope-width) / 2) solid transparent;
+
+  /* flap height & color */
   border-top: 130px solid var(--envelope-tab);
-  border-right: 150px solid transparent;
-  border-left: 150px solid transparent;
+
   transform-origin: top;
   transition: all 0.5s ease-in-out 0.7s;
 }
-.envelope-wrapper > .envelope::after {
+
+/* Bottom/front cover */
+.envelope::after {
   content: "";
   position: absolute;
   z-index: 2;
-  width: 0px;
-  height: 0px;
-  border-top: 130px solid transparent;
-  border-right: 150px solid var(--envelope-cover);
+
+  /* same half-width split */
+  border-right: calc(var(--envelope-width) / 2) solid var(--envelope-cover);
+  border-left:  calc(var(--envelope-width) / 2) solid var(--envelope-cover);
+
+  /* shape */
+  border-top:    130px solid transparent;
   border-bottom: 100px solid var(--envelope-cover);
-  border-left: 150px solid var(--envelope-cover);
 }
+
+/* The letter inside */
 .envelope > .letter {
   position: absolute;
-  right: 20%;
   bottom: 0;
-  width: 54%;
+  right: 20%; /* keeps it inset from the right */
+  width: calc(var(--envelope-width) * 0.54);
   height: 80%;
+  overflow-y: auto;
+  scrollbar-width: thin;
   background: var(--primary);
   text-align: center;
   transition: all 1s ease-in-out;
@@ -66,12 +98,16 @@ body{
   padding: 20px 10px;
 }
 
+/* Letter text styling */
 .envelope > .letter > .text {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: var(--txt-color);
-  text-align: left;
+  text-align: justify;
+  text-align-last: left;
   font-size: 10px;
 }
+
+/* The little heart on top */
 .heart {
   position: absolute;
   top: 50%;
@@ -85,8 +121,8 @@ body{
   box-shadow: 0 1px 6px var(--shadow-color);
   cursor: pointer;
 }
-.heart:before, 
-.heart:after {
+.heart::before, 
+.heart::after {
   content: "";
   position: absolute;
   width: 15px;
@@ -94,13 +130,15 @@ body{
   background-color: var(--heart-color);
   border-radius: 50%;
 }
-.heart:before {
+.heart::before {
   top: -7.5px;
 }
-.heart:after {
+.heart::after {
   right: 7.5px;
 }
-.flap > .envelope:before {
+
+/* “Open” state: flip the flap, lift the letter, rotate the heart */
+.flap > .envelope::before {
   transform: rotateX(180deg);
   z-index: 0;
 }
@@ -112,4 +150,20 @@ body{
 .flap > .heart {
   transform: rotate(90deg);
   transition-delay: 0.4s;
+}
+.song-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: inherit;                 /* walang hand cursor */
+  outline: none;
+  -webkit-tap-highlight-color: transparent; /* no blue flash sa mobile */
+}
+.song-link:link,
+.song-link:visited,
+.song-link:hover,
+.song-link:focus,
+.song-link:active {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
 }

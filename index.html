@@ -2,33 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Envelope + Letter (Open/Close on Click)</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style_index.css">
+    <title>Login Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </head>
 <body>
-    <div class="container">
-        <div class="envelope-wrapper">
-            <div class="envelope">
-                <div class="letter">
-                    <div class="text">
-                        <strong>Dear Person.</strong>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                            Numquam labore omnis minus maiores laboriosam, facere in beatae esse. 
-                        </p>
-                    </div>
-                </div>
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">Login</div>
+            <div class="title signup">Clue</div>
+        </div>
+
+        <div class="form-container">
+            <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">Login</label>
+                <label for="signup" class="slide signup">Clues</label>
+                <div class="slider-tab"></div>
             </div>
-            <div class="heart"></div>
+
+            <div class="form-inner">
+                <form action="#" class="login"> 
+                    <div class="field">
+                        <input type="password" placeholder="password" id="password">
+                    </div>
+
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Login" id="login-btn">
+                    </div>
+                </form>
+
+                <form action="#" class="signup">
+                    <h4>- Tawag ko sa'yo.</h4>
+                    <h4>- lowercase lang lahat? 'di mo malalaman if nagtatanong ako or nagsasabi :P</h4>
+                    <h4>- walang space</h4>
+                    <h4>- 2 words sha, consisting of 10 letters</h4>
+                    <h4>- dami na masyadong clue, ok na 'yan.</h4>
+                </form>
+            </div>
+
         </div>
     </div>
+  
+    <script src="js.js"></script>
     <script>
-        const envelope = document.querySelector('.envelope-wrapper');
-        envelope.addEventListener('click', () => {
-            envelope.classList.toggle('flap');
+        $(document).ready(function() {
+            function validateLogin() {
+                event.preventDefault();
+                
+                const password = $("#password").val();
+                
+                if (password === "") {
+                    Swal.fire({
+                        title: "HULAAN MO NGA!",
+                        text: "Wala ka pang nilalagay!",
+                        icon: "warning",
+                        confirmButtonColor: "#FFD700"
+                    });
+                } else if (password === "bebedianne") {
+                    Swal.fire({
+                        title: "GALING NAMAN NG BEBE!",
+                        text: "Hope you like it!",
+                        icon: "success",
+                        confirmButtonColor: "#FFD700"
+                    }).then(() => {
+                        sessionStorage.setItem("loggedIn", "true");
+                        window.location.href = "letter.html";
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Mali ka! Ayusin mo! HAHAHA!!",
+                        text: "Kaya mo 'yan, konting hula pa.",
+                        icon: "error",
+                        confirmButtonColor: "#FFD700"
+                    });
+                }
+            }
+
+            $("#login-btn").click(validateLogin);
+
+            $("#username, #password").keypress(function(event) {
+                if (event.which === 13) { // Enter key
+                    validateLogin();
+                }
+            });
         });
+
     </script>
 </body>
 </html>
